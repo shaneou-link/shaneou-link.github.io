@@ -72,6 +72,20 @@ order: 0                       # 越小越靠前
 
 首次部署需要在 GitHub 仓库 Settings → Pages → Source 选 **"GitHub Actions"**。
 
+## 致谢 / Credits
+
+本博客基于 [astro-wanderer](https://github.com/igagansingh/astro-wanderer) 模板构建，原作者为 [Gagan Singh](https://github.com/igagansingh)，采用 [MIT License](https://github.com/igagansingh/astro-wanderer/blob/main/LICENSE) 开源。
+
+在 wanderer 基础上做了以下定制：
+- Hero 内容与社交链接替换为个人化信息
+- 新增 `/projects` 页面，承载 GitHub 开源项目列表
+- `/` 自动重定向到 `/blog`，Hero 内容迁移至 `/home`
+- 文章 frontmatter schema 改为 `pubDate` + 9 个英文 slug 标签 + 可选 `series` 字段
+- 中文日期格式 `YYYY-MM-DD`、中文 UI 文案、简化 Hero 区域外的内容入口
+- 删除 wanderer 默认的 `/travel` 路由与 `trips` content collection
+
+非常感谢 Gagan Singh 提供了一个简洁、克制、内容驱动的 Astro 主题。
+
 ## License
 
 [MIT](./LICENSE)
