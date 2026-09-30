@@ -1,0 +1,34 @@
+---
+import Layout from '../../components/Layout.astro';
+import PostCard from '../../components/PostCard.astro';
+import { getAllPosts, getUsedTags } from '../../utils/posts';
+import { getTagLabel } from "../../utils/tags";
+import { BLOG_TAGS } from '../../content.config';
+import { withBase } from '../../data/site';
+
+const posts = await getAllPosts();
+const usedTags = await getUsedTags();
+const usedTagSet = new Set(usedTags.map((u) => u.tag));
+---
+
+<Layout title="Blog" description="记录互联网架构、编程语言、AI 落地的学习与实践。">
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">Blog</p>
+      <h1>文章</h1>
+      <p class="muted" style="max-width: 60ch;">
+        围绕计算机基础、编程语言、AI、容器、中间件与架构设计的学习与实践记录。
+      </p>
+
+      <div class="tag-list" style="margin: 1.5rem 0 2.5rem;">
+        {BLOG_TAGS.filter((t) => usedTagSet.has(t)).map((t) => (
+          <a class="tag" href={withBase(`/blog/tags/${t}/`)}>#{getTagLabel(t)} <span style="opacity: 0.6;">({usedTags.find((u) => u.tag === t)?.count ?? 0})</span></a>
+        ))}
+      </div>
+
+      <div class="post-list">
+        {posts.map((p) => <PostCard post={p} />)}
+      </div>
+    </div>
+  </section>
+</Layout>

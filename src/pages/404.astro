@@ -1,0 +1,21 @@
+---
+import Layout from '../components/Layout.astro';
+import Icon from '../components/Icon.astro';
+import { withBase } from '../data/site';
+---
+
+<Layout title="404" description="页面未找到" noindex>
+  <section class="section center">
+    <div class="container">
+      <p class="eyebrow" style="margin-top: 2rem;">404</p>
+      <h1 style="font-size: clamp(4rem, 12vw, 7rem); margin: 0;">404</h1>
+      <p class="muted" style="max-width: 45ch; margin: 0 auto 1.5rem;">
+        这篇页面已经搬走，或者从未存在过。从下面任一入口回去吧。
+      </p>
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a class="btn btn-primary" href={withBase('/home')}>回到首页 <Icon name="arrow-right" size={16} /></a>
+        <a class="btn" href={withBase('/blog')}>浏览文章 <Icon name="arrow-right" size={16} /></a>
+      </div>
+    </div>
+  </section>
+</Layout>

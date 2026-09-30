@@ -1,0 +1,22 @@
+---
+import { site, withBase } from '../data/site';
+import { NAV_ITEMS } from '../consts';
+---
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <ul class="footer-links">
+      {NAV_ITEMS.map((l) => (
+        <li><a href={withBase(l.href)}>{l.label}</a></li>
+      ))}
+    </ul>
+    <ul class="footer-links">
+      {Object.values(site.socials).filter(Boolean).map((s) => (
+        <li>
+          <a href={withBase(s.url)} target={s.url.startsWith('http') ? '_blank' : undefined} rel="noopener">{s.label}</a>
+        </li>
+      ))}
+    </ul>
+    <p>© {new Date().getFullYear()} {site.author.name} · {site.author.location}</p>
+  </div>
+</footer>

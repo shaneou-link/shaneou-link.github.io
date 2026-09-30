@@ -1,0 +1,97 @@
+---
+import Layout from '../../components/Layout.astro';
+import Icon from '../../components/Icon.astro';
+import { getCollection, render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import { site, withBase } from '../../data/site';
+import { getAllPosts, formatDate, readingTime } from '../../utils/posts';
+import { getTagLabel } from '../../utils/tags';
+import FormattedDate from '../../components/FormattedDate.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+type Props = {
+  post: CollectionEntry<'blog'>;
+};
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const allPosts = await getAllPosts();
+const idx = allPosts.findIndex((p) => p.id === post.id);
+const newer = idx > 0 ? allPosts[idx - 1] : undefined;
+const older = idx >= 0 && idx < allPosts.length - 1 ? allPosts[idx + 1] : undefined;
+
+const rt = readingTime(post.body);
+const description = post.data.description;
+const canonical = `${site.url}/blog/${post.id}/`;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: post.data.title,
+  description,
+  datePublished: post.data.pubDate.toISOString(),
+  ...(post.data.updatedDate && { dateModified: post.data.updatedDate.toISOString() }),
+  author: { '@type': 'Person', name: site.author.name },
+  url: canonical,
+  keywords: post.data.tags.join(', '),
+};
+---
+
+<Layout
+  title={post.data.title}
+  description={description}
+  type="article"
+  image={post.data.heroImage ?? '/img/og.jpg'}
+  canonical={canonical}
+  jsonLd={jsonLd}
+>
+  <article class="section">
+    <div class="container">
+      <nav aria-label="Breadcrumb" style="margin-bottom: 1.5rem;">
+        <a href={withBase('/blog')}><Icon name="arrow-left" size={14} /> 返回博客</a>
+      </nav>
+
+      <header style="max-width: 70ch;">
+        <div class="post-meta">
+          <FormattedDate date={post.data.pubDate} />
+          <span class="dot">·</span>
+          <span>{rt} 分钟阅读</span>
+          {post.data.updatedDate && (
+            <>
+              <span class="dot">·</span>
+              <span>更新于 {formatDate(post.data.updatedDate)}</span>
+            </>
+          )}
+        </div>
+        <h1 style="margin: 0.75rem 0 0.5rem;">{post.data.title}</h1>
+        <p class="muted" style="font-size: 1.1rem;">{description}</p>
+        {post.data.tags.length > 0 && (
+          <div class="tag-list">
+            {post.data.tags.map((t) => <a class="tag" href={withBase(`/blog/tags/${t}/`)}>#{getTagLabel(t)}</a>)}
+          </div>
+        )}
+      </header>
+
+      {post.data.heroImage && (
+        <img src={withBase(post.data.heroImage)} alt={post.data.title} style="border-radius: var(--radius-lg); margin: 2rem 0; width: 100%; object-fit: cover; max-height: 420px;" />
+      )}
+
+      <div class="prose" style="margin-top: 2rem;">
+        <Content />
+      </div>
+
+      <nav aria-label="文章导航" class="pagination" style="justify-content: space-between; margin-top: 3rem;">
+        {newer && <a href={withBase(`/blog/${newer.id}/`)} style="display: inline-flex; align-items: center; gap: 0.5rem;"><Icon name="arrow-left" size={16} /> {newer.data.title}</a>}
+        {older && <a href={withBase(`/blog/${older.id}/`)} style="display: inline-flex; align-items: center; gap: 0.5rem; margin-left: auto;">{older.data.title} <Icon name="arrow-right" size={16} /></a>}
+      </nav>
+    </div>
+  </article>
+</Layout>

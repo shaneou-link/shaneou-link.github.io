@@ -1,0 +1,43 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { withBase } from '../data/site';
+import { getTagLabel } from '../utils/tags';
+import { readingTime } from "../utils/posts";
+import FormattedDate from './FormattedDate.astro';
+
+type Post = CollectionEntry<'blog'>;
+
+interface Props {
+  post: Post;
+}
+
+const { post } = Astro.props;
+const { title, description, pubDate, tags, heroImage } = post.data;
+const rt = readingTime(post.body);
+---
+
+<article class="post-card">
+  {heroImage && (
+    <a class="post-card-cover" href={withBase(`/blog/${post.id}/`)}>
+      <img src={heroImage} alt="" loading="lazy" />
+    </a>
+  )}
+  <div class="post-card-body">
+    <div class="post-meta">
+      <FormattedDate date={pubDate} />
+      <span class="dot">·</span>
+      <span>{rt} 分钟阅读</span>
+    </div>
+    <h3>
+      <a href={withBase(`/blog/${post.id}/`)}>{title}</a>
+    </h3>
+    <p class="post-excerpt">{description}</p>
+    {tags.length > 0 && (
+      <div class="tag-list">
+        {tags.map((t) => (
+          <a class="tag" href={withBase(`/blog/tags/${t}/`)}>#{getTagLabel(t)}</a>
+        ))}
+      </div>
+    )}
+  </div>
+</article>
