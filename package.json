@@ -3,7 +3,7 @@
   "type": "module",
   "version": "1.0.0",
   "private": true,
-  "description": "Shane.O 的个人技术博客",
+  "description": "Shane Ou 的个人技术博客",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",

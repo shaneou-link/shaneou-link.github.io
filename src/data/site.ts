@@ -25,7 +25,7 @@ export interface SocialLink {
  */
 export const site = {
   /** Full name — used for <title> and meta tags */
-  title: 'Shane.O',
+  title: 'Shane Ou',
   /** Short handle used in page titles and the brand mark */
   shortTitle: 'shaneou',
   /** Default meta description for pages that don't set their own */
@@ -34,7 +34,7 @@ export const site = {
   /** Production URL — no trailing slash. Used for canonical URLs, OG tags, RSS and sitemap */
   url: 'https://shaneou-link.github.io',
   author: {
-    name: 'Shane.O',
+    name: 'Shane Ou',
     email: 'hello@example.com',         // TODO: replace with real email
     location: 'China',
     /** Optional: link to a PDF résumé served from /public */

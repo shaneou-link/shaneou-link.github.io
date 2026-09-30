@@ -3,7 +3,7 @@
  * Edit here for global navigation, hero copy, and site metadata.
  */
 
-export const SITE_TITLE = 'Shane.O';
+export const SITE_TITLE = 'Shane Ou';
 export const SITE_DESCRIPTION =
   '记录互联网架构、编程语言、AI 落地的学习与实践。';
 
