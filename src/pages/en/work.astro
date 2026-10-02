@@ -1,12 +1,12 @@
 ---
-import Layout from '../components/Layout.astro';
-import Experience from '../components/Experience.astro';
-import Education from '../components/Education.astro';
-import Skills from '../components/Skills.astro';
-import { site, withBase } from '../data/site';
-import { experience } from '../data/resume';
-import { useT } from '../utils/t';
-import { DEFAULT_LOCALE } from '../i18n';
+import Layout from '../../components/Layout.astro';
+import Experience from '../../components/Experience.astro';
+import Education from '../../components/Education.astro';
+import Skills from '../../components/Skills.astro';
+import { site, withBase } from '../../data/site';
+import { experience } from '../../data/resume';
+import { useT } from '../../utils/t';
+import { DEFAULT_LOCALE } from '../../i18n';
 
 const locale = (Astro.currentLocale as 'zh-CN' | 'en' | undefined) ?? DEFAULT_LOCALE;
 const t = useT(locale);

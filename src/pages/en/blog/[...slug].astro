@@ -1,31 +1,30 @@
 ---
-import Layout from '../../components/Layout.astro';
-import Icon from '../../components/Icon.astro';
+import Layout from '../../../components/Layout.astro';
+import Icon from '../../../components/Icon.astro';
 import { render } from 'astro:content';
-import { site, withBase } from '../../data/site';
+import { site, withBase } from '../../../data/site';
 import {
   resolvePost,
   getPostNeighbors,
   formatDateLocalized,
   readingTime,
   readingTimeLabel,
-} from '../../utils/posts';
-import { getTagLabel } from '../../utils/tags';
-import { useT } from '../../utils/t';
+} from '../../../utils/posts';
+import { getTagLabel } from '../../../utils/tags';
+import { useT } from '../../../utils/t';
 import {
   DEFAULT_LOCALE,
   LOCALE_BCP47,
   prefixPathname,
   canonicalSlugOf,
   type Locale,
-} from '../../i18n';
-import FormattedDate from '../../components/FormattedDate.astro';
-import TranslationFallbackBadge from '../../components/TranslationFallbackBadge.astro';
+} from '../../../i18n';
+import FormattedDate from '../../../components/FormattedDate.astro';
+import TranslationFallbackBadge from '../../../components/TranslationFallbackBadge.astro';
 
 export async function getStaticPaths() {
   const { getCollection } = await import('astro:content');
   const posts = await getCollection('blog', ({ data }) => !data.draft);
-  // Deduplicate by canonical slug — only one path per article, regardless of language.
   const seen = new Set<string>();
   const paths: { params: { slug: string } }[] = [];
   for (const p of posts) {
@@ -43,9 +42,7 @@ const t = useT(locale);
 const canonicalSlug = Astro.params.slug as string;
 const resolved = await resolvePost(canonicalSlug, locale);
 if (!resolved) {
-  // Should be unreachable because getStaticPaths only emits known slugs,
-  // but Astro's static path checker wants a real return.
-  return Astro.redirect('/blog');
+  return Astro.redirect('/en/blog');
 }
 const { post, isFallback, availableTranslations } = resolved;
 
@@ -79,8 +76,6 @@ const jsonLd = {
   inLanguage: LOCALE_BCP47[post.data.lang],
 };
 
-// <html lang> must follow the *rendered* language, not the URL locale.
-// When falling back, the page is in zh-CN even though the URL is /en/blog/...
 const htmlLang = LOCALE_BCP47[post.data.lang];
 ---
 

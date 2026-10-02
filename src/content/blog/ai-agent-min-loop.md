@@ -3,6 +3,7 @@ title: AI Agent 落地的最小闭环：规划、工具与记忆
 description: 把 AI Agent 从 demo 变成产品的关键，是把"规划-工具-记忆"这三件事的最小闭环跑通
 pubDate: 2026-09-30
 tags: ["ai", "architecture"]
+lang: zh-CN
 ---
 
 2024 年起，AI Agent 成了最热的词。但凡有个 LLM 应用，都想往"Agent"上靠。可真正的 Agent 落地，远比 demo 复杂。

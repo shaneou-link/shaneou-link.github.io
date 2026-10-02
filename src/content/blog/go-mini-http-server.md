@@ -3,6 +3,7 @@ title: 用 Go 写一个最小可用的 HTTP 服务
 description: 从零开始用标准库实现一个生产可用的 HTTP 服务，覆盖路由、中间件、优雅关停
 pubDate: 2026-09-30
 tags: ["go", "architecture"]
+lang: zh-CN
 ---
 
 每学一门新语言，我都会写一遍"最小可用 HTTP 服务"——不是 Hello World 那种 5 行玩具，而是带路由、中间件、优雅关停、能直接上生产的版本。

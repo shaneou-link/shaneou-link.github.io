@@ -1,16 +1,15 @@
 ---
-import Layout from '../../components/Layout.astro';
-import ProjectCard from '../../components/ProjectCard.astro';
+import Layout from '../../../components/Layout.astro';
+import ProjectCard from '../../../components/ProjectCard.astro';
 import { getCollection } from 'astro:content';
-import { useT } from '../../utils/t';
-import { DEFAULT_LOCALE } from '../../i18n';
+import { useT } from '../../../utils/t';
+import { DEFAULT_LOCALE } from '../../../i18n';
 
 const locale = (Astro.currentLocale as 'zh-CN' | 'en' | undefined) ?? DEFAULT_LOCALE;
 const t = useT(locale);
 
 const all = await getCollection('projects', ({ data }) => !data.draft);
 const projects = all.sort((a, b) => {
-  // Manual order first, then startDate desc
   if (a.data.order !== b.data.order) return a.data.order - b.data.order;
   return b.data.startDate.valueOf() - a.data.startDate.valueOf();
 });

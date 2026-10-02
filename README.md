@@ -66,6 +66,35 @@ order: 0                       # 越小越靠前
 ---
 ```
 
+## 多语言支持
+
+- **默认语言**：中文（根路由 `/`）
+- **英文**：`/en/*` 子路径
+- **博客翻译**：每篇文章中文版为 canonical slug；英文版文件名加 `.en` 后缀（如 `hello-world.md` + `hello-world.en.md`）。访问 `/en/blog/hello-world/` 时自动选择英文版，缺失翻译时回退中文版并在右下角弹出"正在阅读 中文"角标
+- **UI 文案**：所有可见文案走 `src/i18n/{zh-CN,en}.json` 字典；新增翻译时使用 `import { useT } from '../utils/t'; const t = useT(Astro.currentLocale);`
+- **完整文档**：见 `AGENT.md` 的 *i18n / 多语言支持* 章节
+
+### 新增一篇英文博客
+
+```bash
+# 1. 已有中文版 hello-world.md
+# 2. 新建英文版，注意 slug 必填（Astro 的 github-slugger 会吞掉 .en）
+cat > src/content/blog/hello-world.en.md << 'EOF'
+---
+slug: hello-world.en
+title: Hello World
+description: An English demo
+pubDate: 2026-10-01
+tags: ["go"]
+lang: en
+translations:
+  zh-CN: hello-world
+---
+
+(English content here)
+EOF
+```
+
 ## 部署
 
 `push` 到 `main` 分支 → `.github/workflows/deploy.yml` 自动构建 → 发布到 GitHub Pages。

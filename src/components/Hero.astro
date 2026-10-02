@@ -2,27 +2,42 @@
 import { typingRoles } from '../data/resume';
 import { site, withBase } from '../data/site';
 import Icon from './Icon.astro';
+import { useT } from '../utils/t';
+import { DEFAULT_LOCALE, type Locale } from '../i18n';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale: localeProp } = Astro.props;
+const locale: Locale = (localeProp ?? (Astro.currentLocale as Locale | undefined) ?? DEFAULT_LOCALE) as Locale;
+const t = useT(locale);
 
 const rolesJson = JSON.stringify(typingRoles);
-const nameParts = site.author.name.split(' ');
-const firstName = nameParts.shift() ?? '';
-const lastName = nameParts.join(' ');
+
+// Locale-aware display name. Each entry in `nameByLocale` is required to
+// cover every locale, so a direct lookup is safe. The fallback chain is
+// defensive only — it should never fire in practice.
+const nameDisplay =
+  site.author.nameByLocale[locale] ??
+  site.author.nameByLocale[DEFAULT_LOCALE] ?? {
+    family: site.author.name.split(' ').shift() ?? '',
+    given: site.author.name.split(' ').slice(1).join(' '),
+  };
+const { family: firstName, given: lastName } = nameDisplay;
 ---
 
 <section class="hero">
   <div class="stars" aria-hidden="true"></div>
   <div class="container hero-inner">
     <div>
-      <p class="hero-greeting">Hello, I'm</p>
+      <p class="hero-greeting">{t('home.greeting')}</p>
       <h1>{firstName} {lastName && <span class="accent">{lastName}</span>}</h1>
       <p class="hero-typed">
         <span class="typed" id="typed-roles" data-roles={rolesJson}></span><span class="typed-cursor" aria-hidden="true">▍</span>
       </p>
 
-      <p class="hero-bio">
-        Write a short bio here — who you are, what you build, what you're
-        curious about. Two or three sentences is plenty.
-      </p>
+      <p class="hero-bio">{t('home.bio')}</p>
 
       <div class="social-row">
         {Object.values(site.socials).map((s) => (
@@ -34,7 +49,7 @@ const lastName = nameParts.join(' ');
       </div>
     </div>
 
-    <img class="hero-avatar" src={withBase('/img/avatar.svg')} alt={`Portrait of ${site.author.name}`} width="220" height="220" />
+    <img class="hero-avatar" src={withBase('/images/avatar.webp')} alt={`Portrait of ${site.author.name}`} width="220" height="220" />
   </div>
 </section>
 
